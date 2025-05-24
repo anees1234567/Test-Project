@@ -14,16 +14,23 @@ const routelist:RouteObject[]=[
     {
         path:"",
         errorElement:<ErrorElement/>,
-        element:<Home/>
+        children:[
+            {
+                index:true,
+                element:<Home/>
+            },
+            {
+               path:"*",
+               element:<Navigate to={"page-not-found"}/>
+           },
+          {
+              path:"page-not-found",
+              element: <PageNotFound/>
+          }
+        ],
+    
     },
-    {
-        path:"*",
-        element:<Navigate to={"page-not-found"}/>
-    },
-    {
-        path:"page-not-found",
-        element: <PageNotFound/>
-    }
+    
 ]
 
 

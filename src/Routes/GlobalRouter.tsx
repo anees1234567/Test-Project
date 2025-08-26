@@ -47,10 +47,7 @@ const routelist: RouteObject[] = [
             <PublicRoute element={<Signup/>}/>
         </Suspense>,
       },
-    //   {
-    //     path: 'dashboard',
-    //     element: <ProtectedRoute element={<Dashboard />} />,
-    //   },
+
     //   {
     //     path: 'students',
     //     element: <ProtectedRoute element={<StudentList />} />,

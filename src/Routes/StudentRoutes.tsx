@@ -1,9 +1,9 @@
 import { Navigate, RouteObject } from "react-router-dom";
 import { JSX } from "react";
-import StudentList from "../Pages/Students/StudentList";
-import StudentDetails from "../Pages/Students/StudentDetails";
+import StudentList from "../Pages/StudentDetails/components/StudentList"
+import StudentDetails from "../Pages/StudentDetails/components/AddOrEditStudent";
 
-const isAuthenticated = () => !!localStorage.getItem("authToken");
+const isAuthenticated = () => !!localStorage.getItem("auth_token");
 
 // Protected Route Wrapper
 const ProtectedRoute = ({ element }: { element: JSX.Element }) =>
@@ -11,11 +11,12 @@ const ProtectedRoute = ({ element }: { element: JSX.Element }) =>
 
 export const studentRoutes: RouteObject[] = [
   {
+    index:true,
     path: "students",
     element: <ProtectedRoute element={<StudentList />} />,
   },
   {
-    path: "students/:id",
+    path: "addstudents",
     element: <ProtectedRoute element={<StudentDetails />} />,
   },
 ];

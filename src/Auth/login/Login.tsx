@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import { login } from "./services";
 import { useNotification } from "../../notification/context";
+import { setItem, storageKey } from "../../uitilities/storage/storage";
 
 function LoginForm() {
   const {
@@ -13,12 +14,22 @@ function LoginForm() {
   } = useForm<{ email: string; password: string }>();
   const navigateTo=useNavigate()
   const {showNotification}=useNotification()
-  const {mutate:authenticate,isLoading}=useMutation(login,{
-    onSuccess:()=>{
-      navigateTo("/students")
-      showNotification("login successfull","success")
-      
-    },
+  const {mutate:authenticate,isLoading,data}=useMutation(login,{
+   onSuccess: (data) => {
+  console.log("Login Response:", data);
+  const accessToken = data?.response?.accessToken;
+  const refreshToken = data?.response?.refreshToken;
+  if (!accessToken || !refreshToken) {
+    console.error("Tokens missing in response!", data);
+    return;
+  }
+  setItem(storageKey.TOKEN, accessToken);
+  setItem(storageKey.REFRESH_TOKEN, refreshToken);
+
+  navigateTo("/students");
+  showNotification("Login successful", "success");
+}
+,
     onError:()=>{
       showNotification("login Failed","error")
     }

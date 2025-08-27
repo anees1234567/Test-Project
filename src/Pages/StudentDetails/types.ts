@@ -1,8 +1,11 @@
 export type studentListType={
     name:string;
     email:string;
-    Age:number;
-    class:string;
+    age:number;
+    studentClass:string;
+    id?:number|string;
+    _id?:string;
+    subjects?:{id:number,name:string}[];
 }
 
 export type studentListResponseType={

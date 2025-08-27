@@ -22,6 +22,7 @@ function SignUp() {
         email:"",
         password:""
       })
+     navigate("/login");
     },
     onError:()=>{
        showNotification("user registraion failed","error")

@@ -1,3 +1,4 @@
+import { Delete } from "@mui/icons-material";
 import axios from "axios";
 
 
@@ -15,7 +16,8 @@ const ENDPOINTS = {
 //   students  based Api
 
   GET_ALL_STUDENTS: "/students/getAllStudents",
-  ADD_STUDENTS: "/students/addStudent",
+  ADD_STUDENTS: "/students/addstudent",
+  Delete_STUDENTS: "/students/deleteStudent",
 };
 
 const STORAGE_KEYS = {

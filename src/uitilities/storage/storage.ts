@@ -3,15 +3,14 @@ export const storageKey = {
   REFRESH_TOKEN: "refresh_token",
 };
 
-
 export const setItem = (key: string, value: any) => {
   try {
-    localStorage.setItem(key, JSON.stringify(value));
+    const valueToStore = typeof value === 'object' && value.accessToken ? value.accessToken : value;
+    localStorage.setItem(key, JSON.stringify(valueToStore));
   } catch (error) {
     console.error("Error saving to localStorage", error);
   }
 };
-
 
 export const getItem = <T>(key: string): T | null => {
   try {
@@ -23,7 +22,6 @@ export const getItem = <T>(key: string): T | null => {
   }
 };
 
-
 export const removeItem = (key: string) => {
   try {
     localStorage.removeItem(key);
@@ -31,7 +29,6 @@ export const removeItem = (key: string) => {
     console.error("Error removing from localStorage", error);
   }
 };
-
 
 export const clearStorage = () => {
   try {

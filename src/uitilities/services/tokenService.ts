@@ -1,20 +1,20 @@
 
-import axios from "axios";
+
 import { getItem, setItem, storageKey } from "../storage/storage";
 import { Instance } from "../../../constants";
 
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 
-const http = axios.create({
-  baseURL: API_URL,
-});
 
 
-http.interceptors.request.use(
+
+Instance.interceptors.request.use(
+
   (config) => {
     const token = getItem(storageKey.TOKEN);
     if (token) {
+   
       config.headers = config.headers || {};
       if (config.headers.set) {
         config.headers.set('Authorization', `Bearer ${token}`);
@@ -22,13 +22,14 @@ http.interceptors.request.use(
         config.headers['Authorization'] = `Bearer ${token}`;
       }
     }
+    console.log("Final Request Config:", config);
     return config;
   },
   (error) => Promise.reject(error)
 );
 
 
-http.interceptors.response.use(
+Instance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
@@ -38,10 +39,8 @@ http.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-
         const refreshToken = getItem(storageKey.REFRESH_TOKEN);
         if (!refreshToken) throw new Error("No refresh token");
-
         const refreshResponse = await Instance.post(`/user/refresh`, {
           refreshtoken:refreshToken,
         });
@@ -49,7 +48,7 @@ http.interceptors.response.use(
         const { accessToken } = refreshResponse.data;
         setItem(storageKey.TOKEN, { accessToken });
         originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
-        return http(originalRequest);
+        return Instance(originalRequest);
       } catch (refreshError) {
         // refresh failed → logout user
         console.error("Refresh token failed", refreshError);
@@ -61,4 +60,4 @@ http.interceptors.response.use(
   }
 );
 
-export default http;
+

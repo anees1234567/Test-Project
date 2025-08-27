@@ -7,10 +7,7 @@ const Home = () => {
 
   return (
  <>
-      <div>Home</div>
-      <Autocomplete/>
-      {show && <div>{data.age}</div>}
-      <Button onClick={()=>{setShow(true)}}>click</Button>
+
  </>
   )
 }

@@ -1,19 +1,31 @@
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { CustomFormField } from "../uitilities/CustomComponents/Customformfields";
+import { CustomFormField } from "../../uitilities/CustomComponents/Customformfields";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
+import { login } from "./services";
+import { useNotification } from "../../notification/context";
 
 function LoginForm() {
   const {
     control,
     handleSubmit,
-    reset,
-  } = useForm();
+  } = useForm<{ email: string; password: string }>();
   const navigateTo=useNavigate()
+  const {showNotification}=useNotification()
+  const {mutate:authenticate,isLoading}=useMutation(login,{
+    onSuccess:()=>{
+      navigateTo("/students")
+      showNotification("login successfull","success")
+      
+    },
+    onError:()=>{
+      showNotification("login Failed","error")
+    }
+  })
 
-  const onSubmit = (data) => {
-    alert(`Login successful! (This is a demo)\nUser: ${data.username}`);
-    reset();
+  const onSubmit = (data:{email:string,password:string}) => {
+    authenticate(data)
   };
 
   return (
@@ -31,9 +43,9 @@ function LoginForm() {
             <CustomFormField
               control={control}
               element="input"
-              name="username"
-              fieldProps={{ label: "Username" ,fullWidth:true}}
-              rules={{ required: "Username is required" }}
+              name="email"
+              fieldProps={{ label: "email" ,fullWidth:true}}
+              rules={{ required: "email is required" }}
             />
         
           </div>
@@ -54,7 +66,8 @@ function LoginForm() {
             type="submit"
             variant="contained"
             fullWidth
-            className="!bg-green-500 !text-white !rounded-lg !py-2 hover:!bg-green-600 transition"
+            className="!bg-blue-500 !text-white !rounded-lg !py-2 hover:!bg-blue-600 transition"
+            endIcon={isLoading && < CircularProgress size={20} color="inherit"/>}
           >
             Sign In
           </Button>

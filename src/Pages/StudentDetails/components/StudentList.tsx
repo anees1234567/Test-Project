@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { CustomFormField } from "../../../uitilities/CustomComponents/Customformfields";
 import CustomTableBody from "../../../uitilities/CustomComponents/CustomTableBody";
 import { useMutation } from "react-query";
+import debounce from "../../../uitilities/Debounce/Debounce";
 
 // import TaskAltIcon from "@mui/icons-material/TaskAlt";
 function StudentListPage(){
@@ -31,21 +32,11 @@ function StudentListPage(){
     }
  })
 
-  const { mutate:fetchList, data, isLoading } = useMutation(getEmrList, {
-    onError: (e: any) => {
-      showSnackbar({
-        message: e.response.data.responseMessage || "Something went wrong !",
-        open: true,
-        variant: "warning",
-        duration: 3000,
-      });
-    },
-  });
+
   const handleSearch = (e:any) => {
     const {  value } = e.target;
     setSearchParams({
       ...searchParams,
-      pageNumber: 0,
       filter:{
         searchText:value
       },
@@ -79,7 +70,7 @@ const onChange = debounce(handleSearch, 500);
       <Paper className="flex flex-col gap-2">
         <TableContainer className="min-h-[80dvh] max-h-[80vh] relative ">
           <div className="px-4 py-2 border-b">
-            <Typography variant="h6">Registered Patients</Typography>
+            <Typography variant="h6">Registered students</Typography>
           </div>
           <form className="py-4 px-2 grid grid-cols-4 gap-2">
             <CustomFormField

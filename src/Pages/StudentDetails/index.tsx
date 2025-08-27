@@ -13,7 +13,7 @@ export type contextType={
  }
 
 export const StudentContext=createContext<contextType|null>({edit:null,setEdit:()=>{},tableData:[],setTableData:()=>{},refetch:true,setRefetch:()=>{}})
-function LabComponent() {
+function SttudentListComponent() {
     const [tableData,setTableData]=useState<studentListType[]>([])
     const [edit,setEdit] = useState<studentformType | null>(null)
     const [refetch,setRefetch] = useState<boolean>(true)
@@ -24,4 +24,4 @@ function LabComponent() {
   )
 }
 
-export default LabComponent
+export default SttudentListComponent
